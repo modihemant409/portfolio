@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const SYSTEM_PROMPT = `You are an AI assistant representing Hemant Modi, a Tech Lead with 4+ years of experience in health-tech. Answer recruiter and hiring manager questions about Hemant professionally and concisely. Keep answers under 120 words. Use bullet points for lists.
 
@@ -38,33 +38,34 @@ export default async function handler(
     return
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
     res.status(500).json({ error: 'API key not configured' })
     return
   }
 
   try {
-    const client = new Anthropic({ apiKey })
-
-    const messages = body.messages.map((m) => ({
-      role: m.role as 'user' | 'assistant',
-      content: m.content,
-    }))
-
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 300,
-      system: SYSTEM_PROMPT,
-      messages,
+    const genAI = new GoogleGenerativeAI(apiKey)
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: SYSTEM_PROMPT,
     })
 
-    const textBlock = response.content.find((block) => block.type === 'text')
-    const reply = textBlock && textBlock.type === 'text' ? textBlock.text : ''
+    // Convert messages to Gemini format — map 'assistant' to 'model'
+    const history = body.messages.slice(0, -1).map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }))
+
+    const lastMessage = body.messages[body.messages.length - 1]
+
+    const chat = model.startChat({ history })
+    const result = await chat.sendMessage(lastMessage.content)
+    const reply = result.response.text()
 
     res.status(200).json({ reply })
   } catch (err) {
-    console.error('Anthropic API error:', err)
+    console.error('Gemini API error:', err)
     res.status(500).json({ error: 'Failed to get response' })
   }
 }
