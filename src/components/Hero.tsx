@@ -18,7 +18,7 @@ const TERMINAL_LINES: TerminalLine[] = [
   { type: 'output', text: 'Hemant Modi — Tech Lead @ VisitApp, Noida', color: '#3fb950' },
   { type: 'blank' },
   { type: 'prompt', cmd: 'cat stack.txt' },
-  { type: 'output', text: 'Node.js · TypeScript · React · Kafka · AWS · Gemini AI', color: '#d2a8ff' },
+  { type: 'output', text: 'Node.js · TypeScript · React · Kafka · AWS', color: '#d2a8ff' },
   { type: 'blank' },
   { type: 'prompt', cmd: 'git log --oneline | wc -l' },
   { type: 'output', text: '800+ commits in production', color: '#e3b341' },
@@ -137,8 +137,8 @@ export default function Hero({ onOpenChat }: HeroProps) {
         {/* Body */}
         <div
           ref={tbodyRef}
-          className="px-5 py-4 font-mono text-sm leading-7 text-[#c9d1d9] overflow-hidden"
-          style={{ height: '210px' }}
+          className="px-4 py-4 font-mono text-xs sm:text-sm leading-7 text-[#c9d1d9] overflow-hidden"
+          style={{ height: '200px' }}
         >
           {TERMINAL_LINES.slice(0, visibleLines).map((line, i) => {
             if (line.type === 'blank') {

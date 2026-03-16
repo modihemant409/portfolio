@@ -181,9 +181,9 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
 
           {/* Modal — slide from right on desktop, bottom sheet on mobile */}
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
+            initial={{ opacity: 0, x: typeof window !== 'undefined' && window.innerWidth <= 480 ? 0 : '100%', y: typeof window !== 'undefined' && window.innerWidth <= 480 ? '100%' : 0 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: typeof window !== 'undefined' && window.innerWidth <= 480 ? 0 : '100%', y: typeof window !== 'undefined' && window.innerWidth <= 480 ? '100%' : 0 }}
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
             className="fixed z-50 flex flex-col chat-modal-panel"
             style={{
