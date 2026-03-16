@@ -52,7 +52,11 @@ export default async function handler(
     })
 
     // Convert messages to Gemini format — map 'assistant' to 'model'
-    const history = body.messages.slice(0, -1).map((m) => ({
+    // Filter out leading assistant messages (Gemini requires history to start with 'user')
+    const allButLast = body.messages.slice(0, -1)
+    const firstUserIdx = allButLast.findIndex((m) => m.role === 'user')
+    const trimmed = firstUserIdx === -1 ? [] : allButLast.slice(firstUserIdx)
+    const history = trimmed.map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }))
