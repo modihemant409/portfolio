@@ -20,7 +20,7 @@ const TERMINAL_LINES: TerminalLine[] = [
   { type: 'prompt', cmd: 'cat stack.txt' },
   { type: 'output', text: 'Node.js · TypeScript · React · Kafka · AWS', color: '#d2a8ff' },
   { type: 'blank' },
-  { type: 'prompt', cmd: 'git log --oneline | wc -l' },
+  { type: 'prompt', cmd: 'git log | wc -l' },
   { type: 'output', text: '800+ commits in production', color: '#e3b341' },
   { type: 'blank' },
   { type: 'prompt', cmd: '', isCursor: true },
@@ -69,7 +69,7 @@ export default function Hero({ onOpenChat }: HeroProps) {
     >
       {/* Background glow */}
       <div
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px]"
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[300px]"
         style={{
           background:
             'radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%)',

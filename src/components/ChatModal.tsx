@@ -272,8 +272,9 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
                 onKeyDown={handleKeyDown}
                 placeholder="Ask anything..."
                 disabled={isLoading}
-                className="flex-1 text-xs px-3.5 py-2.5 rounded-lg border text-[#e2e2f0] outline-none transition-colors placeholder-[#444] disabled:opacity-50"
+                className="flex-1 px-3.5 py-2.5 rounded-lg border text-[#e2e2f0] outline-none transition-colors placeholder-[#444] disabled:opacity-50"
                 style={{
+                  fontSize: '16px',
                   background: '#1a1a28',
                   borderColor: '#2a2a3a',
                 }}
